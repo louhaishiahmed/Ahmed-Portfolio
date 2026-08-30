@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Design tokens
+ * ------------------------------------------------------------------ */
+@theme inline {
+  --color-ink: #08080a;        /* page background */
+  --color-surface: #101014;    /* raised panels */
+  --color-line: #26262f;       /* hairline borders */
+  --color-accent: var(--accent);
+
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* One strong accent colour. Switch the default here, or use the
+ * on-screen preview swatches (bottom-left) while deciding.
+ *   amber  – warm, confident, high energy
+ *   coral  – bolder, more personality, slightly playful
+ *   teal   – cooler, more "engineered", calmer                    */
+:root                       { --accent: #f5a524; } /* amber (default) */
+:root[data-accent="coral"]  { --accent: #ff6f5e; }
+:root[data-accent="teal"]   { --accent: #17b8a6; }
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: #d4d4d4;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #08080a;
+  }
+
+  /* Consistent, always-visible keyboard focus ring on every interactive
+   * element. `focus-visible` keeps it off for plain mouse clicks. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Small round hit targets (the progress dots) look better with the
+   * ring hugging the control rather than sitting 3px off it. */
+  [data-focus-tight]:focus-visible {
+    outline-offset: 2px;
+  }
+
+  /* Sections receive programmatic focus when jumped to via the progress
+   * dots (so keyboard users land there) — they are not controls, so
+   * suppress the ring on that. */
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
+
+  /* Accessibility: honour the OS "reduce motion" setting.
+   * framer-motion is handled separately via <MotionConfig reducedMotion="user">
+   * and explicit guards; this covers CSS-driven motion. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Signature motif — a very faint chessboard grid.
+ * A nod to the chess-coaching background. Subtle by design: it should
+ * register as texture, not decoration.
+ * ------------------------------------------------------------------ */
+.chess-grid {
+  background-image: conic-gradient(
+    rgba(255, 255, 255, 0.022) 0 25%,
+    transparent 0 50%,
+    rgba(255, 255, 255, 0.022) 0 75%,
+    transparent 0
+  );
+  background-size: 128px 128px;
+}
+
+.chess-grid--tight {
+  background-size: 72px 72px;
+}
